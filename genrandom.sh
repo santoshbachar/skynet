@@ -1,4 +1,4 @@
 #!/bin/bash
-R=`jot -r 1 $1 $2`
+R=`shuf -i $1 $2 -n 1`
 echo $R
 sleep $R
