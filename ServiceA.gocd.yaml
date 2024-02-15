@@ -1,0 +1,383 @@
+format_version: 10
+pipelines:
+  ServiceA:
+    group: data-gen
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git-c5536fd:
+        git: /Users/santoshbachar/dev/meghdoot/pipelines_for_testing_analytics
+        shallow_clone: false
+        auto_update: true
+        branch: main
+    stages:
+    - compile:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          compilejob:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '2'
+                - '12'
+                command: ./genrandom.sh
+                run_if: passed
+    - unit-test:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          run-unit-test:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '2'
+                - '12'
+                command: ./genrandom.sh
+                run_if: passed
+    - package:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          genpackage:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '2'
+                - '12'
+                command: ./genrandom.sh
+                run_if: passed
+  Manifest:
+    group: data-gen
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git-c5536fd:
+        git: /Users/santoshbachar/dev/meghdoot/pipelines_for_testing_analytics
+        shallow_clone: false
+        auto_update: true
+        branch: main
+      ServiceAMaterial:
+        pipeline: ServiceA
+        stage: compile
+      ServiceBMaterial:
+        pipeline: ServiceB
+        stage: compile
+    stages:
+    - buildmanifest:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          manifestgen:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '2'
+                - '5'
+                command: ./genrandom.sh
+                run_if: passed
+  E2E:
+    group: data-gen
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git-c5536fd:
+        git: /Users/santoshbachar/dev/meghdoot/pipelines_for_testing_analytics
+        shallow_clone: false
+        auto_update: true
+        branch: main
+      ManifestMaterial:
+        pipeline: Manifest
+        stage: buildmanifest
+    stages:
+    - create-namespace:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          create-ns:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+    - updateDB:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          db-migrator:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+    - deploy:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          deploy-app:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+    - test:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          test-process:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+    - gentestreport:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          generate-report:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+  UAT:
+    group: data-gen
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git-c5536fd:
+        git: /Users/santoshbachar/dev/meghdoot/pipelines_for_testing_analytics
+        shallow_clone: false
+        auto_update: true
+        branch: main
+      E2EMaterial:
+        pipeline: E2E
+        stage: gentestreport
+    stages:
+    - create-namespace:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          create-ns:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+    - updateDB:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          db-migrator:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+    - deploy:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          deploy-app:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+    - uatsmoketest:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          smoke-test:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+  Prod:
+    group: data-gen
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git-c5536fd:
+        git: /Users/santoshbachar/dev/meghdoot/pipelines_for_testing_analytics
+        shallow_clone: false
+        auto_update: true
+        branch: main
+      UATMaterial:
+        pipeline: UAT
+        stage: deploy
+    stages:
+    - create-namespace:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          create-ns:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+    - updateDB:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          db-migrator:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+    - deploy:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          deploy-app:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+    - prodsmoketest:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          smoke-test:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
+    - gentestreport:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          prod-smoke-testreport:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - '12'
+                - '25'
+                command: ./genrandom.sh
+                run_if: passed
