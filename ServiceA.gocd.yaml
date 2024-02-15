@@ -7,7 +7,7 @@ pipelines:
     display_order: -1
     materials:
       git-c5536fd:
-        git: /Users/santoshbachar/dev/meghdoot/pipelines_for_testing_analytics
+        git: https://github.com/santoshbachar/skynet
         shallow_clone: false
         auto_update: true
         branch: main
@@ -70,7 +70,7 @@ pipelines:
     display_order: -1
     materials:
       git-c5536fd:
-        git: /Users/santoshbachar/dev/meghdoot/pipelines_for_testing_analytics
+        git: https://github.com/santoshbachar/skynet
         shallow_clone: false
         auto_update: true
         branch: main
@@ -105,7 +105,7 @@ pipelines:
     display_order: -1
     materials:
       git-c5536fd:
-        git: /Users/santoshbachar/dev/meghdoot/pipelines_for_testing_analytics
+        git: https://github.com/santoshbachar/skynet
         shallow_clone: false
         auto_update: true
         branch: main
@@ -205,7 +205,7 @@ pipelines:
     display_order: -1
     materials:
       git-c5536fd:
-        git: /Users/santoshbachar/dev/meghdoot/pipelines_for_testing_analytics
+        git: https://github.com/santoshbachar/skynet
         shallow_clone: false
         auto_update: true
         branch: main
@@ -288,7 +288,7 @@ pipelines:
     display_order: -1
     materials:
       git-c5536fd:
-        git: /Users/santoshbachar/dev/meghdoot/pipelines_for_testing_analytics
+        git: https://github.com/santoshbachar/skynet
         shallow_clone: false
         auto_update: true
         branch: main
